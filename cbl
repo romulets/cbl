@@ -1,6 +1,6 @@
 #!/bin/bash
 
-CLOUDBEAT_PATH="./cloudbeat/"
+CLOUDBEAT_PATH="./cloudbeat"
 
 build() {
     (cd $CLOUDBEAT_PATH && GOOS=darwin GOARCH=arm64 go build -v)
@@ -26,11 +26,12 @@ configure() {
         exit 1
     fi
 
-    cp $file cloudbeat/cloudbeat.yml
+    cp $file "$CLOUDBEAT_PATH/cloudbeat.yml"
+    cp cbl-resources/events_creator.go "$CLOUDBEAT_PATH/transformer/events_creator.go"
 }
 
 clean() {
-    (cd $CLOUDBEAT_PATH && git checkout cloudbeat.yml)
+    (cd $CLOUDBEAT_PATH && git checkout cloudbeat.yml transformer/events_creator.go)
 }
 
 case $1 in
